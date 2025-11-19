@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor @AllArgsConstructor @Builder
-public class Person
+public class EventRegistration
 {
     @NotBlank
     private String attendeeName;

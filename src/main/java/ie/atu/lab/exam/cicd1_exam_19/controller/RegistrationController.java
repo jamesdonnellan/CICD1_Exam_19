@@ -1,7 +1,7 @@
 package ie.atu.lab.exam.cicd1_exam_19.controller;
 
-import ie.atu.lab.exam.cicd1_exam_19.model.Person;
-import ie.atu.lab.exam.cicd1_exam_19.service.PersonService;
+import ie.atu.lab.exam.cicd1_exam_19.model.EventRegistration;
+import ie.atu.lab.exam.cicd1_exam_19.service.RegistrationService;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +12,19 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController@RequestMapping("/api/Person")
-public class PersonController
+public class RegistrationController
 {
-    private final PersonService service;
-    public PersonController(PersonService service)
+    private final RegistrationService service;
+    public RegistrationController(RegistrationService service)
     {
         this.service = service;
     }
 
     // Create
     @PostMapping("/registrations")
-    public ResponseEntity<Person> create(@Valid @RequestBody Person p)
+    public ResponseEntity<EventRegistration> create(@Valid @RequestBody EventRegistration p)
     {
-        Person created = service.create(p);
+        EventRegistration created = service.create(p);
         return ResponseEntity
                 .created(URI.create("/api/Person/registrations"))
                 .body(created);
@@ -32,9 +32,9 @@ public class PersonController
 
     // Read
     @GetMapping("/registrations/{ticketCode}")
-    public ResponseEntity<Person> getOne (@PathVariable String ticketCode)
+    public ResponseEntity<EventRegistration> getOne (@PathVariable String ticketCode)
     {
-        Optional<Person> maybe = service.findById(ticketCode);
+        Optional<EventRegistration> maybe = service.findById(ticketCode);
         if (maybe.isPresent())
         {
             return ResponseEntity.ok(maybe.get());
@@ -47,7 +47,7 @@ public class PersonController
     }
 
     @GetMapping
-    public ResponseEntity<List<Person>> findAll()
+    public ResponseEntity<List<EventRegistration>> findAll()
     {
         return ResponseEntity.ok(service.findAll());
     }
@@ -55,16 +55,16 @@ public class PersonController
 
     // Update
     @PutMapping("/registrations/{ticketCode}")
-    public ResponseEntity<Person> update(@PathVariable String ticketCode, @Valid @RequestBody Person updated)
+    public ResponseEntity<EventRegistration> update(@PathVariable String ticketCode, @Valid @RequestBody EventRegistration updated)
     {
-        Optional<Person> maybe = service.update(ticketCode, updated);
+        Optional<EventRegistration> maybe = service.update(ticketCode, updated);
         return maybe.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
     // Delete
     @DeleteMapping("/registrations/{ticketCode}")
-    public ResponseEntity <Person> delete(@PathVariable String ticketCode)
+    public ResponseEntity <EventRegistration> delete(@PathVariable String ticketCode)
     {
         boolean removed = service.delete(ticketCode);
         return removed ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
