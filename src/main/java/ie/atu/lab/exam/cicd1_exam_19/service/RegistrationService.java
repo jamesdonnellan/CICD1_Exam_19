@@ -1,5 +1,8 @@
 package ie.atu.lab.exam.cicd1_exam_19.service;
 
+import ie.atu.lab.exam.cicd1_exam_19.errorHandling.DuplicateTicketCodeException;
+import ie.atu.lab.exam.cicd1_exam_19.errorHandling.InvalidRegistrationDataException;
+import ie.atu.lab.exam.cicd1_exam_19.errorHandling.RegistrationNotFoundException;
 import ie.atu.lab.exam.cicd1_exam_19.model.EventRegistration;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +39,7 @@ public class RegistrationService
         {
             if(findById(p.getTicketCode()).isPresent())
             {
-                throw new DuplicateTicketCodeException ("Person with id: " + p.getTicketCode() + "already exists.");
+                throw new DuplicateTicketCodeException("Person with id: " + p.getTicketCode() + "already exists.");
             }
         }
         store.add(p);
@@ -54,13 +57,18 @@ public class RegistrationService
                 p.setEmail(updated.getEmail());
                 return Optional.of(p);
             }
+            else
+            {
+                throw new InvalidRegistrationDataException("Invalid Registration Data.");
+            }
         }
         return Optional.empty();
     }
 
     // Delete
-    public boolean delete(String ticketCode)
+    public boolean delete(String ticketCode, EventRegistration p1)
     {
         return store.removeIf(p -> p.getTicketCode().equals(ticketCode));
+      //   throw new RegistrationNotFoundException ("Doesn't exist. Person with id: " + p1.getTicketCode() + "does not exist.");
     }
 }
