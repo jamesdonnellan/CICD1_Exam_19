@@ -7,6 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,4 +27,24 @@ public class GlobalErrorHandling
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorList);
     }
+
+    @ExceptionHandler(DuplicateTicketCodeException.class)
+    public ResponseEntity<DuplicateTicketCodeException> showDupError(DuplicateTicketCodeException dte)
+    {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(dte);
+    }
+
+
+    @ExceptionHandler(InvalidRegistrationDataException.class)
+    public ResponseEntity<InvalidRegistrationDataException> showInvalidRegistrationData(InvalidRegistrationDataException ire)
+    {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ire);
+    }
+
+    @ExceptionHandler(RegistrationNotFoundException.class)
+    public ResponseEntity<RegistrationNotFoundException> showRegistrationNotFound(RegistrationNotFoundException rnf)
+    {
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(rnf);
+    }
+
 }
